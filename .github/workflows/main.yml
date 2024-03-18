@@ -25,12 +25,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Update Jira issues with version
+        uses: GeoWerkstatt/create-jira-release@v1
+        with:
+          jira-project-key: 'GHACT'
+          jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
+          build-version: v${{ env.VERSION }}
