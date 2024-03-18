@@ -20,9 +20,8 @@ jobs:
           run: echo "$GITHUB_CONTEXT"
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update Jira issues with version
         uses: GeoWerkstatt/create-jira-release@v1
