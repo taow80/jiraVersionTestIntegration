@@ -5,6 +5,8 @@ on:
   release:
     types: [published]
 
+  workflow_dispatch:
+
 jobs:
   debug:
       name: Debug
@@ -16,6 +18,25 @@ jobs:
           env:
             GITHUB_CONTEXT: ${{ toJson(github) }}
           run: echo "$GITHUB_CONTEXT"
+  debugJiraIssues:
+    name: Debug JIRA issue pull
+    runs-on: ubuntu-latest
+    steps:
+        - name: Fetch entire Git history (including tags)
+          run: git fetch --prune --unshallow --tags
+          shell: bash
+  
+        - name: Collect issue numbers since last release/tag
+          run: |
+            export LC_ALL=en_US.utf8
+            git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
+            grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | \
+            sed 's/^\|$/"/g' | paste -sd , - | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_ENV
+          shell: bash
+
+        - name: Output result
+          run: echo "$GITHUB_ENV"
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -27,3 +48,4 @@ jobs:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
           build-version: ${{ github.event.release.tag_name }}
+          
