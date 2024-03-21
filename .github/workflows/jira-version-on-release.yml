@@ -20,7 +20,7 @@ jobs:
           run: echo "$GITHUB_CONTEXT"
   debugJiraIssues:
     name: Debug JIRA issue pull
-    runs-on: ubuntu-latest
+    runs-on: "composite"
     steps:
         - uses: actions/checkout@v4
         - name: Fetch entire Git history (including tags)
