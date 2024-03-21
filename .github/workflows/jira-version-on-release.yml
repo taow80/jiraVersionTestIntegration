@@ -22,6 +22,7 @@ jobs:
     name: Debug JIRA issue pull
     runs-on: ubuntu-latest
     steps:
+        - uses: actions/checkout@v4
         - name: Fetch entire Git history (including tags)
           run: git fetch --prune --unshallow --tags
           shell: bash
