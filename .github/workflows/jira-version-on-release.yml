@@ -29,7 +29,7 @@ jobs:
   
         - name: Collect issue numbers since last release/tag
           run: |
-            export LC_ALL=en_US.utf8
+            export LC_ALL=en_US.utf8 \
             git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
             grep -oE "GHACT-[[:digit:]]{1,}" | sort | uniq | \
             sed 's/^\|$/"/g' | paste -sd , - | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_ENV
