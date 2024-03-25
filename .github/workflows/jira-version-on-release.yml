@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Update Jira issues with version
-        uses: GeoWerkstatt/create-jira-release@v1
+        uses: ./.github/actions/jira-release-update
         with:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
