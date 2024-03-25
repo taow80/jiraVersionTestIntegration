@@ -18,27 +18,6 @@ jobs:
           env:
             GITHUB_CONTEXT: ${{ toJson(github) }}
           run: echo "$GITHUB_CONTEXT"
-  debugJiraIssues:
-    name: Debug JIRA issue pull
-    runs-on: ubuntu-latest
-    steps:
-        - uses: actions/checkout@v4
-        - name: Fetch entire Git history (including tags)
-          run: git fetch --prune --unshallow --tags
-          shell: bash
-  
-        - name: set lang
-          run: |
-            export LC_ALL=en_US.utf8
-          shell: bash
-
-        - name: Collect issue numbers since last release/tag
-          run: |
-            git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | grep -oE "GHACT-[[:digit:]]{1,}" | sort | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_ENV
-          shell: bash
-
-        - name: Output result
-          run: echo "$GITHUB_ENV"
 
   build:
     runs-on: ubuntu-latest
