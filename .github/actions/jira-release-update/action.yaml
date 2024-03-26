@@ -46,7 +46,7 @@ runs:
           echo 'Describe Tags Issue List: ${{ env.DESCRIBE_JIRA_ISSUES }}' \
           echo 'Describe Rev-List Issue List: ${{ env.REVLIST_JIRA_ISSUES }}'\
           echo 'Related Jira Issue List: ${{ env.RELATED_JIRA_ISSUES }}'
-      shel:: bash
+      shell: bash
 
     - name: Create json and invoke webhook
       run: |
