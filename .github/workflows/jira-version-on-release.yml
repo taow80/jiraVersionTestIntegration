@@ -22,7 +22,7 @@ jobs:
         with:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
-          build-version: ${{ env.VERSION }}
+          build-version: ${{ github.event.release.tag_name }}
 
   debug:
     name: Debugging Env
