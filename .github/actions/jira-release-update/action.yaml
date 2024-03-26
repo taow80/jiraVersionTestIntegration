@@ -30,11 +30,11 @@ runs:
       shell: bash
 
     - name: Git Log 2
-      run: git log $(git describe --abbrev=0 --tags)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}"
+      run: git log $(git describe --abbrev=0 --tags)..HEAD
       shell: bash
       
     - name: Git Log 3
-      run: git log $(git describe --abbrev=0 --tags)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort
+      run: git log $(git describe --abbrev=0 --tags)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}"
       shell: bash
 
     - name: Git Log 4
