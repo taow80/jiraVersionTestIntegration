@@ -22,8 +22,7 @@ runs:
         export LC_ALL=en_US.utf8
         git log $(git describe --abbrev=0 --tags 2> /dev/null)..HEAD | \
           grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | \
-          sed 's/^\|$/"/g' | paste -sd , - | awk '{print "DESCRIBE_JIRA_ISSUES="$0}' >> $GITHUB_ENV \
-          echo 'Describe Tags Issue List: ${{ env.DESCRIBE_JIRA_ISSUES }}'
+          sed 's/^\|$/"/g' | paste -sd , - | awk '{print "DESCRIBE_JIRA_ISSUES="$0}' >> $GITHUB_ENV
       shell: bash
 
     - name: Debug rev-list issue names
@@ -31,8 +30,7 @@ runs:
         export LC_ALL=en_US.utf8
         git log $(git rev-list --max-parents=0 HEAD)..HEAD | \
           grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | \
-          sed 's/^\|$/"/g' | paste -sd , - | awk '{print "REVLIST_JIRA_ISSUES="$0}' >> $GITHUB_ENV \
-          echo 'Describe Rev-List Issue List: ${{ env.REVLIST_JIRA_ISSUES }}'
+          sed 's/^\|$/"/g' | paste -sd , - | awk '{print "REVLIST_JIRA_ISSUES="$0}' >> $GITHUB_ENV
       shell: bash
     
     - name: Collect issue numbers since last release/tag
@@ -40,9 +38,15 @@ runs:
         export LC_ALL=en_US.utf8
         git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
           grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | \
-          sed 's/^\|$/"/g' | paste -sd , - | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_ENV \
-          echo 'Related Jira Issue List: ${{ env.RELATED_JIRA_ISSUES }}'
+          sed 's/^\|$/"/g' | paste -sd , - | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_ENV
       shell: bash
+
+    - name: Output jira issue list
+      run: |
+          echo 'Describe Tags Issue List: ${{ env.DESCRIBE_JIRA_ISSUES }}' \
+          echo 'Describe Rev-List Issue List: ${{ env.REVLIST_JIRA_ISSUES }}'\
+          echo 'Related Jira Issue List: ${{ env.RELATED_JIRA_ISSUES }}'
+      shel:: bash
 
     - name: Create json and invoke webhook
       run: |
