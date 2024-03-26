@@ -1,5 +1,5 @@
 
-name: On Release Creation Update Jira Issues
+name: On Release Update Jira Issues
 
 on:
   release:
@@ -8,18 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  debug:
-      name: Debug
-      runs-on: ubuntu-latest
-      steps:
-        - name: Dump env
-          run: env | sort
-        - name: Dump GitHub context
-          env:
-            GITHUB_CONTEXT: ${{ toJson(github) }}
-          run: echo "$GITHUB_CONTEXT"
-
   build:
+    name: Update Jira issues
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,4 +20,15 @@ jobs:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
           build-version: ${{ github.event.release.tag_name }}
+
+  debug:
+    name: Debugging Env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump env
+        run: env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
           
