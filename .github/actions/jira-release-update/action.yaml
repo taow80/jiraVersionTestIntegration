@@ -25,8 +25,24 @@ runs:
       run: export LC_ALL=en_US.utf8
       shell: bash
 
-    - name: Git Log
-      run: git log
+    - name: Git Log 1
+      run: git log $(git describe --abbrev=0 --tags 2> /dev/null)..HEAD
+      shell: bash
+
+    - name: Git Log 2
+      run: git log $(git describe --abbrev=0 --tags 2> /dev/null)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}"
+      shell: bash
+      
+    - name: Git Log 3
+      run: git log $(git describe --abbrev=0 --tags 2> /dev/null)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort
+      shell: bash
+
+    - name: Git Log 4
+      run: git log $(git describe --abbrev=0 --tags 2> /dev/null)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq
+      shell: bash
+
+    - name: Git Log 5
+      run: git log $(git describe --abbrev=0 --tags 2> /dev/null)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | sed 's/^\|$/"/g'
       shell: bash
 
     - name: Echo tickets to update
