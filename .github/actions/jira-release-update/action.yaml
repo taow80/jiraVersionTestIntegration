@@ -25,7 +25,7 @@ runs:
       run: export LC_ALL=en_US.utf8
       shell: bash
 
-   - name: Echo tickets to update
+    - name: Echo tickets to update
       run: git log $(git describe --abbrev=0 --tags 2> /dev/null)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | sed 's/^\|$/"/g' | paste -sd , -
       shell: bash
 
