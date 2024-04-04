@@ -1,10 +1,7 @@
 
-name: On Release Update Jira Issues
+name: Upon new release create Jira version and apply to issues in release
 
 on:
-  release:
-    types: [published]
-
   workflow_dispatch:
 
 permissions:
@@ -12,12 +9,12 @@ permissions:
 
 jobs:
   build:
-    name: Update Jira issues
+    name: Create new Update Jira issues upon new release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update Jira issues with version
+      - name: Update Jira issues
         uses: ./.github/actions/jira-release-update
         with:
           jira-project-key: 'GHACT'
