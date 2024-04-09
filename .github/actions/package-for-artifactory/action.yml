@@ -3,14 +3,36 @@ description: create nuget package for pushing to artifactory
 outputs:
   commits: # array of commits inlcuded in release
     value: ${{ steps.release-notes.outputs.commits }}
+  release-version: release version
+    value: steps.last-release-version.outputs.RELEASE_VERSION
 runs:
   using: composite
   steps:
+
+    - name: Bump ${{ env.APP_NAME }} Version
+      shell: bash
+      run: |
+          npm version minor -w projects/${{ env.PATH_APP_NAME }}
+
+    - name: Get Current Package Version
+      shell: bash       
+      id: package-version       
+      run: |
+        echo "VERSION=$(node -p "require('./projects/${{ env.PATH_APP_NAME }}/package.json').version")" >> $GITHUB_OUTPUT
+        
     - name: Set Release Version
       shell: bash
       id: release-version
       run:
           echo "RELEASE_VERSION=${{ steps.package-version.outputs.VERSION }}+${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
+
+    - name: Commit Version Bump
+      if: env.DEPLOY_ENVIRONMENT == 'production'
+      shell: bash
+      run: |
+        git pull origin master
+        git commit -am "version(${{ env.APP_NAME }}): bump version to ${{ steps.package-version.outputs.VERSION }}" -nv
+        git push -u origin master
 
     - name: Get Last Release Version
       if: env.DEPLOY_ENVIRONMENT == 'production'
