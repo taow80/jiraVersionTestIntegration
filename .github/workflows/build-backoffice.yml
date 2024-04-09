@@ -1,0 +1,40 @@
+env:
+  APP_NAME: 'Backoffice'
+  PATH_APP_NAME: 'backoffice'
+
+name: Backoffice Package for Artifactory
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Pack Backoffice
+    if: ${{ !startsWith( github.event.head_commit.message, 'version(' ) }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with: 
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: '0'
+        
+      - name: Set Deploy Environment
+        id: is-production
+        shell: bash
+        run: |
+          if [[ ${{ github.event_name }} == workflow_dispatch ]]; then
+            echo "DEPLOY_ENVIRONMENT=production" >> $GITHUB_OUTPUT
+          else
+            echo "DEPLOY_ENVIRONMENT=development" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Package for Artifactory
+        uses: ./.github/actions/package-for-artifactory
+        env: 
+          APP_NAME: ${{ env.APP_NAME }}
+          PATH_APP_NAME: ${{ env.PATH_APP_NAME }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOY_ENVIRONMENT: ${{ steps.is-production.outputs.DEPLOY_ENVIRONMENT }}
