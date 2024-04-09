@@ -48,4 +48,5 @@ runs:
         GH_TOKEN: ${{ github.token }}
       id: release-notes
       run: |
-        COMMITS=$(node ./.github/release-notes/getCommits.js ${{ steps.last-release-version.outputs.RELEASE_VERSION }} | awk '{print $1}') >> $GITHUB_OUTPUT
+        echo "COMMITS=$(node ./.github/release-notes/getCommits.js ${{ steps.last-release-version.outputs.RELEASE_VERSION }} | awk '{print $1}')" >> $GITHUB_OUTPUT
+        
