@@ -31,6 +31,9 @@ jobs:
             echo "DEPLOY_ENVIRONMENT=development" >> $GITHUB_OUTPUT
           fi
 
+      - name: Create Package for Artifactory
+        uses: ./.github/actions/package-for-artifactory
+
       - name: Update Jira issues
         uses: ./.github/actions/jira-release-update
         with:
