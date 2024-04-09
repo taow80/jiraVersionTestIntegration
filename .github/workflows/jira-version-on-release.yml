@@ -12,14 +12,34 @@ jobs:
     name: Create new Update Jira issues upon new release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: '0'
+
+      - name: Set Deploy Environment
+        id: is-production
+        shell: bash
+        run: |
+          if [[ ${{ github.event_name }} == workflow_dispatch ]]; then
+            echo "DEPLOY_ENVIRONMENT=production" >> $GITHUB_OUTPUT
+          else
+            echo "DEPLOY_ENVIRONMENT=development" >> $GITHUB_OUTPUT
+          fi
+        
+      - name: Create Package for Artifactory
+        uses: ./.github/actions/package-for-artifactory
+        id: package-for-artifactory
+        env: 
+          APP_NAME: ${{ env.APP_NAME }}
+          PATH_APP_NAME: ${{ env.PATH_APP_NAME }}
 
       - name: Update Jira issues
         uses: ./.github/actions/jira-release-update
         with:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
-          build-version: ${{ github.event.release.tag_name }}
+          build-version: ${{ steps.package-for-artifiactory.outputs.RELEASE_VERSION }}
 
   debug:
     name: Debugging Env
