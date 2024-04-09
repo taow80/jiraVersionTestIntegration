@@ -3,8 +3,7 @@ description: create nuget package for pushing to artifactory
 outputs:
   commits: # array of commits inlcuded in release
     value: ${{ steps.release-notes.outputs.COMMITS }}
-  releaseVersion: release version
-    value: ${{ steps.last-release-version.outputs.RELEASE_VERSION }}
+
 runs:
   using: composite
   steps:
