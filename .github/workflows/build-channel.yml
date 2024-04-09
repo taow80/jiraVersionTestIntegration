@@ -20,7 +20,11 @@ jobs:
         with: 
           token: ${{ secrets.AUTOBOT_GITHUB_TOKEN }}
           fetch-depth: '0'
-
+      - name: setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
         
