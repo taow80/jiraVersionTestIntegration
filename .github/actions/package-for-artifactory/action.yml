@@ -29,9 +29,9 @@ runs:
       if: env.DEPLOY_ENVIRONMENT == 'production'
       shell: bash
       run: |
-        git pull origin master
+        git pull origin main
         git commit -am "version(${{ env.APP_NAME }}): bump version to ${{ steps.package-version.outputs.VERSION }}" -nv
-        git push -u origin master
+        git push -u origin main
 
     - name: Get Last Release Version
       if: env.DEPLOY_ENVIRONMENT == 'production'
