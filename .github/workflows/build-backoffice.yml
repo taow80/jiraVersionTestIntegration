@@ -46,3 +46,4 @@ jobs:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
           build-version: ${{ steps.package-for-artifactory.outputs.RELEASE_VERSION }}
+          commits: $${{ steps.package-for-artifactory.outputs.COMMITS }}
