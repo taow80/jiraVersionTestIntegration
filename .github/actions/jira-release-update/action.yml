@@ -1,5 +1,5 @@
-name: "Jira Release Web Hook"
-description: "Creates a new Jira release and assigns all relevant issues to it."
+name: Jira Release Web Hook
+description: Creates a new Jira release and assigns all relevant issues to it.
 inputs:
   jira-project-key:
     description: "Jira project identifier"
