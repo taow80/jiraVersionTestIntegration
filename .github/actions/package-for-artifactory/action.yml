@@ -1,4 +1,4 @@
- name: Package for Artifactory
+name: Package for Artifactory
 description: create nuget package for pushing to artifactory
 
 runs:
