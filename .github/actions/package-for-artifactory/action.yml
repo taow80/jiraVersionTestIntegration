@@ -2,9 +2,9 @@ name: Package for Artifactory
 description: create nuget package for pushing to artifactory
 outputs:
   commits: # array of commits inlcuded in release
-    value: ${{ steps.release-notes.outputs.commits }}
+    value: ${{ steps.release-notes.outputs.COMMITS }}
   release-version: release version
-    value: steps.last-release-version.outputs.RELEASE_VERSION
+    value: ${{ steps.last-release-version.outputs.RELEASE_VERSION }}
 runs:
   using: composite
   steps:
