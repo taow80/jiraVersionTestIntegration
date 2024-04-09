@@ -11,7 +11,7 @@ runs:
     - name: Bump ${{ env.APP_NAME }} Version
       shell: bash
       run: |
-          npm version minor -w projects/${{ env.PATH_APP_NAME }}
+          npm version minor -w ${{ env.PATH_APP_NAME }}
 
     - name: Get Current Package Version
       shell: bash       
