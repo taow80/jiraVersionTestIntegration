@@ -33,8 +33,16 @@ jobs:
 
       - name: Create Package for Artifactory
         uses: ./.github/actions/package-for-artifactory
+        id: package-for-artifactory
         env: 
           APP_NAME: ${{ env.APP_NAME }}
           PATH_APP_NAME: ${{ env.PATH_APP_NAME }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOY_ENVIRONMENT: ${{ steps.is-production.outputs.DEPLOY_ENVIRONMENT }}
+
+      - name: Update Jira issues
+        uses: ./.github/actions/jira-release-update
+        with:
+          jira-project-key: 'GHACT'
+          jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
+          build-version: ${{ steps.package-for-artifactory.outputs.RELEASE_VERSION }}
