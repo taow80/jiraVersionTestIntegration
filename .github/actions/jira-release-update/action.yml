@@ -11,7 +11,7 @@ inputs:
     description: "Version identifier"
     required: true
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Fetch entire Git history (including tags)
       run: |
