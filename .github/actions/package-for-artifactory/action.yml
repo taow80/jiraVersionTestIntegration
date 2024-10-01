@@ -45,5 +45,5 @@ runs:
       id: release-notes
       run: |
         echo "COMMITS=$(node ./.github/release-notes/getCommits.js ${{ steps.last-release-version.outputs.RELEASE_VERSION }} | awk '{print $1}')"
-        echo "node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} '$COMMITS'  | awk '{print $1}'" >> $GITHUB_OUTPUT
+        echo "node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} '$COMMITS'  | awk '{print $1}'"
         
