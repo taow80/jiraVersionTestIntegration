@@ -39,7 +39,7 @@ jobs:
         with:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
-          build-version: ${{ steps.package-for-artifiactory.outputs.RELEASE_VERSION }}
+          build-version: ${{ steps.package-for-artifactory.outputs.RELEASE_VERSION }}
 
   debug:
     name: Debugging Env
