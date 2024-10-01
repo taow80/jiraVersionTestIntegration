@@ -1,0 +1,29 @@
+name: Enforce Conventional Commit Syntax
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+    branches:
+      - master
+
+jobs:
+    enforce_conventional:
+        name: "Enforce Conventional Syntax"
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout Repo
+          uses: actions/checkout@v4
+
+        - name: Setup Environment
+          uses: ./.github/actions/setup-environment
+          env: 
+            ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+            ARTIFACTORY_API_TOKEN: ${{ secrets.ARTIFACTORY_API_TOKEN }}      
+
+        - name : Check PR Title
+          shell: bash
+          run: |
+            echo "The Title of your PR is ${{ github.event.pull_request.title }}"
+            node ./.github/conventional-commits/isValidCommitMessage.js "${{ github.event.pull_request.title }}"
+
+            
