@@ -20,7 +20,7 @@ runs:
       shell: bash
       id: release-version
       run:
-          echo "RELEASE_VERSION=${{ steps.package-version.outputs.VERSION }}+${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION=${{ steps.package-version.outputs.VERSION }}+${{ env.APP_NAME }}" >> $GITHUB_ENV
 
     - name: Commit Version Bump
       if: env.DEPLOY_ENVIRONMENT == 'production'
@@ -35,7 +35,7 @@ runs:
       shell: bash
       id: last-release-version
       run: |
-          echo "RELEASE_VERSION=$(gh release list | grep -i '^${{ env.PATH_APP_NAME }}@v' | head -n 1 | awk '{print $1}')" >> $GITHUB_OUTPUT
+          echo "LAST_RELEASE_VERSION=$(gh release list | grep -i '^${{ env.PATH_APP_NAME }}@v' | head -n 1 | awk '{print $1}')" >> $GITHUB_ENV
     
     - name: Create Release
       if: env.DEPLOY_ENVIRONMENT == 'production'
@@ -44,6 +44,6 @@ runs:
         GH_TOKEN: ${{ github.token }}
       id: release-notes
       run: |
-        echo "COMMITS=$(node ./.github/release-notes/getCommits.js ${{ steps.last-release-version.outputs.RELEASE_VERSION }} | awk '{print $1}')"
+        echo "COMMITS=$(node ./.github/release-notes/getCommits.js ${{ env.LAST_RELEASE_VERSION }} | awk '{print $1}')"
         echo "node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} '$COMMITS'  | awk '{print $1}'"
         
