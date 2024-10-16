@@ -10,6 +10,9 @@ inputs:
   build-version:
     description: "Version identifier"
     required: true
+  issues:
+    description: "Array of issues to update in Jira"
+    required: true
 runs:
   using: composite
   steps:
