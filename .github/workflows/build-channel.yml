@@ -50,7 +50,6 @@ jobs:
           jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
           build-version: ${{ steps.package-for-artifactory.outputs.RELEASE_VERSION }}
-          issues: ${{ steps.package-for-artifactory.outputs.COMMITS }}
 
       - name: Dump GitHub context
         env:
