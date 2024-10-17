@@ -3,7 +3,7 @@ const exec = require('@actions/exec');
 
 const getCommits = async () => {
     core.info(process.argv);
-    const releaseVersion = process.argv[2];
+    const releaseVersion = process.argv[3];
 
     let myOutput = '';
     let myError = '';
