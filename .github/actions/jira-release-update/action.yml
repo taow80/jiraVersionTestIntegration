@@ -29,8 +29,7 @@ runs:
       run: |
       if [[ ${{ env.APP_NAME }} == Channel ]]; then
           git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_OUTPUT
-      elif [[ ${{ env.APP_NAME }} == Backoffice ]]
-      then
+      else
           git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Backoffice)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_OUTPUT
       fi
       shell: bash
