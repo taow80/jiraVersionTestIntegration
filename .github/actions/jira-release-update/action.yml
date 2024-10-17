@@ -20,8 +20,10 @@ runs:
     - name: Collect jira issue numbers since last release/tag
       shell: bash
       id: jira-list
-      run:
-        echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE '${{ inputs.jira-project-key }}-[[:digit:]]{1,}' | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_OUTPUT
+      run: |
+        REGEX_JIRA_TICKET=${{ inputs.jira-project-key }}-[[:digit:]]{1,}
+        echo $REGEX_JIRA_TICKET
+        echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_OUTPUT
 
     - name: Create json and invoke webhook
       run: |
