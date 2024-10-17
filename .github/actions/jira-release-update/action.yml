@@ -25,10 +25,6 @@ runs:
       run: export LC_ALL=en_US.utf8
       shell: bash
 
-    - name: Echo tickets to update
-      run: git log $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | sed 's/^\|$/"/g' | paste -sd , -
-      shell: bash
-
     - name: Collect issue numbers since last release/tag
       run: git log $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -oE "${{ inputs.jira-project-key }}-[[:digit:]]{1,}" | sort | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_ENV
       shell: bash
