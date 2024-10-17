@@ -13,14 +13,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Fetch entire Git history (including tags)
-      run: |
-        if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
-          git fetch --prune --unshallow
-        fi
-        git fetch --prune --tags
-      shell: bash
-
     - name: Update Locale
       run: export LC_ALL=en_US.utf8
       shell: bash
@@ -28,9 +20,9 @@ runs:
     - name: Collect issue numbers since last release/tag
       run: |
       if [[ ${{ env.APP_NAME }} == Channel ]]; then
-          git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_OUTPUT
-      else
-          git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Backoffice)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_OUTPUT
+        git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_OUTPUT
+      elsif [[ ${{ env.APP_NAME }} == Backoffice ]]; then
+        git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Backoffice)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_OUTPUT
       fi
       shell: bash
 
