@@ -21,6 +21,7 @@ const getCommits = async () => {
     if(myError){
         core.error(myError)
     }
+    core.info(JSON.stringify(myOutput));
     return JSON.stringify(myOutput);
 };
 getCommits();
