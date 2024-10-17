@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 
 const getCommits = async () => {
-    core.info(process.argv);
+    core.info(process.argv[3]);
     const releaseVersion = process.argv[3];
 
     let myOutput = '';
