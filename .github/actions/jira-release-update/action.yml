@@ -17,14 +17,15 @@ runs:
       run: export LC_ALL=en_US.utf8
       shell: bash
 
-    - name: Collect issue numbers since last release/tag
+    - name: Collect jira issue numbers since last release/tag
       shell: bash
+      id: jira-list
       run:
-        echo "RELATED_JIRA_ISSUES=GHACT-33" >> $GITHUB_OUTPUT
+        echo "ISSUES=GHACT-33" >> $GITHUB_OUTPUT
 
     - name: Create json and invoke webhook
       run: |
-        $json = ConvertTo-Json @{issues = @(${{ RELATED_JIRA_ISSUES }}); data = @{version = "${{ env.VERSION }}"; projectName = "${{ inputs.jira-project-key }}"}}
+        $json = ConvertTo-Json @{issues = @(${{ steps.jira-list.ISSUES }}); data = @{version = "${{ env.VERSION }}"; projectName = "${{ inputs.jira-project-key }}"}}
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-RestMethod ${{ inputs.jira-automation-webhook }} -Method Post -Body $json -ContentType "application/json"
       shell: pwsh
