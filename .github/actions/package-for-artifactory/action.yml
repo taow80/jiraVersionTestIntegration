@@ -14,7 +14,7 @@ runs:
       shell: bash       
       id: package-version       
       run: |
-        echo "VERSION=$(node -p "require('./projects/${{ env.PATH_APP_NAME }}/package.json').version")" >> $GITHUB_OUTPUT
+        echo "VERSION=$(node -p "require('./projects/${{ env.PATH_APP_NAME }}/package.json').version")" >> $GITHUB_ENV
         
     - name: Set Release Version
       shell: bash
