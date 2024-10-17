@@ -20,7 +20,9 @@ runs:
     - name: Collect issue numbers since last release/tag
       run: |
       if [[ ${{ env.APP_NAME }} == Channel ]]; then
-        git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_OUTPUT
+        echo "git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}'" >> $GITHUB_OUTPUT
+      elsif [[ ${{ env.APP_NAME }} == Backoffice ]]; then
+        echo "git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Backoffice)\):' -B 2 | grep -oE "GHACT-[[:digit:]]{1,}" | uniq | awk '{print "RELATED_JIRA_ISSUES="$0}'" >> $GITHUB_OUTPUT
       fi
       shell: bash
 
