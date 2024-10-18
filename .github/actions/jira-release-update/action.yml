@@ -21,9 +21,15 @@ runs:
       shell: bash
       id: jira-list
       run: |
+        if [[ ${{ env.PATH_APP_NAME }} == channel ]]; then
+          REGEX_APP_MERGE_COMMIT='\((channel|PWA)\):'
+        elsif [[ ${{ env.PATH_APP_NAME }} == backoffice ]]; then
+          REGEX_APP_MERGE_COMMIT='\((backoffice)\):'
+        fi
+        echo $REGEX_APP_MERGE_COMMIT
         REGEX_JIRA_TICKET=GHACT-[[:digit:]]{1,}
         echo $REGEX_JIRA_TICKET
-        echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_ENV
+        echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags)..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_ENV
 
     - name: Create json and invoke webhook
       run: |
