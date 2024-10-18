@@ -23,11 +23,11 @@ runs:
       run: |
         REGEX_JIRA_TICKET=GHACT-[[:digit:]]{1,}
         echo $REGEX_JIRA_TICKET
-        echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags $(git describe --abbrev=0 --tags)^)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_OUTPUT
+        echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags)..HEAD | grep -iE '\((Channel|PWA)\):' -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_ENV
 
     - name: Create json and invoke webhook
       run: |
-        $json = ConvertTo-Json @{issues = @(${{ steps.jira-list.ISSUES }}); data = @{version = "${{ env.VERSION }}"; projectName = "${{ inputs.jira-project-key }}"}}
+        $json = ConvertTo-Json @{issues = @(${{ env.ISSUES }}); data = @{version = "${{ env.VERSION }}"; projectName = "${{ inputs.jira-project-key }}"}}
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-RestMethod ${{ inputs.jira-automation-webhook }} -Method Post -Body $json -ContentType "application/json"
       shell: pwsh
