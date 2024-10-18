@@ -20,14 +20,14 @@ runs:
       shell: bash
       id: release-version
       run:
-          echo "RELEASE_VERSION=${{ steps.package-version.outputs.VERSION }}+${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION=${{ env.VERSION }}+${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
 
     - name: Commit Version Bump
       if: env.DEPLOY_ENVIRONMENT == 'production'
       shell: bash
       run: |
         git pull origin master
-        git commit -am "version(${{ env.APP_NAME }}): bump version to ${{ steps.package-version.outputs.VERSION }}" -nv
+        git commit -am "version(${{ env.APP_NAME }}): bump version to ${{ env.VERSION }}" -nv
         git push -u origin master
 
     - name: Get Last Release Version
