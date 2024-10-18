@@ -45,4 +45,4 @@ runs:
       id: release-notes
       run: |
         COMMITS=$(node ./.github/release-notes/getCommits.js ${{ env.LAST_VERSION }})
-        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "$COMMITS"
+        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ env.VERSION }} "$COMMITS"
