@@ -21,8 +21,10 @@ const getCommits = async () => {
     await exec.exec('git', ['log', `--pretty=format:%s`, `HEAD...${releaseVersion}`], options);
     if(myError){
         core.error(myError)
+    } else {
+        core.info(myOutput);
+        core.info(JSON.stringify({...myOutput}))
     }
-    core.info(JSON.stringify(myOutput));
     return JSON.stringify(myOutput);
 };
 getCommits();
