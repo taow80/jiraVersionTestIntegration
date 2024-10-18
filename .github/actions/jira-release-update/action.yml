@@ -27,7 +27,7 @@ runs:
 
     - name: Create json and invoke webhook
       run: |
-        $json = ConvertTo-Json @{issues = @(${{ env.ISSUES }}); data = @{version = "${{ env.VERSION }}"; projectName = "${{ env.PATH_APP_NAME }}@v{{ inputs.jira-project-key }}"}}
+        $json = ConvertTo-Json @{issues = @(${{ env.ISSUES }}); data = @{version = "${{ env.PATH_APP_NAME }}@v"; projectName = "{{env.jira-project-key }}"}}
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-RestMethod ${{ inputs.jira-automation-webhook }} -Method Post -Body $json -ContentType "application/json"
       shell: pwsh
