@@ -1,6 +1,7 @@
 env:
   APP_NAME: 'Channel'
   PATH_APP_NAME: 'channel'
+  JIRA_PROJECT_KEY: 'GHACT'
 
 name: Channel Package for Artifactory
 on:
@@ -47,9 +48,7 @@ jobs:
       - name: Update Jira issues
         uses: ./.github/actions/jira-release-update
         with:
-          jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
-          build-version: ${{ steps.package-for-artifactory.outputs.RELEASE_VERSION }}
 
       - name: Dump GitHub context
         env:
