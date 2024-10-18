@@ -1,6 +1,7 @@
 env:
   APP_NAME: 'Backoffice'
   PATH_APP_NAME: 'backoffice'
+  JIRA_PROJECT_KEY: 'GHACT'
 
 name: Backoffice Package for Artifactory
 on:
@@ -40,7 +41,4 @@ jobs:
       - name: Update Jira issues
         uses: ./.github/actions/jira-release-update
         with:
-          jira-project-key: 'GHACT'
           jira-automation-webhook: ${{ secrets.JIRA_AUTOMATION_WEBHOOK }}
-          build-version: ${{ steps.package-for-artifactory.outputs.RELEASE_VERSION }}
-          commits: $${{ steps.package-for-artifactory.outputs.COMMITS }}
