@@ -65,5 +65,5 @@ runs:
       run: |
         $json = ConvertTo-Json @{issues = @(${{ steps.jira-list.outputs.ISSUES }}); data = @{version = "${{ env.PATH_APP_NAME }}@v${{ steps.package-version.outputs.VERSION }}"; projectName = "${{ env.JIRA_PROJECT_KEY }}"}}
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Invoke-RestMethod ${{ secrets.JIRA_AUTOMATION_WEBHOOK }} -Method Post -Body $json -ContentType "application/json"
+        Invoke-RestMethod ${{ env.JIRA_WEBHOOK_URL }} -Method Post -Body $json -ContentType "application/json"
       shell: pwsh
