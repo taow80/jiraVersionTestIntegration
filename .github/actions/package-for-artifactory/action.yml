@@ -14,20 +14,20 @@ runs:
       shell: bash       
       id: package-version       
       run: |
-        echo "VERSION=$(node -p "require('./projects/${{ env.PATH_APP_NAME }}/package.json').version")" >> $GITHUB_ENV
+        echo "VERSION=$(node -p "require('./projects/${{ env.PATH_APP_NAME }}/package.json').version")" >> $GITHUB_OUTPUT
         
     - name: Set Release Version
       shell: bash
       id: release-version
       run:
-          echo "RELEASE_VERSION=${{ env.VERSION }}+${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION=${{ steps.package-version.outputs.VERSION }}+${{ env.APP_NAME }}" >> $GITHUB_OUTPUT
 
     - name: Commit Version Bump
       if: env.DEPLOY_ENVIRONMENT == 'production'
       shell: bash
       run: |
         git pull origin master
-        git commit -am "version(${{ env.APP_NAME }}): bump version to ${{ env.VERSION }}" -nv
+        git commit -am "version(${{ env.APP_NAME }}): bump version to ${{ steps.package-version.outputs.VERSION }}" -nv
         git push -u origin master
 
     - name: Get Last Release Version
@@ -45,4 +45,25 @@ runs:
       id: release-notes
       run: |
         COMMITS=$(node ./.github/release-notes/getCommits.js ${{ steps.last-release-version.outputs.LAST_VERSION }})
-        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ env.VERSION }} "$COMMITS"
+        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "$COMMITS"
+        
+    - name: Collect Jira issue numbers since last release/tag
+      shell: bash
+      id: jira-list
+      run: |
+        if [[ ${{ env.PATH_APP_NAME }} == channel ]]; then
+          REGEX_APP_MERGE_COMMIT='\((channel|PWA)\):'
+        elif [[ ${{ env.PATH_APP_NAME }} == backoffice ]]; then
+          REGEX_APP_MERGE_COMMIT='\((backoffice)\):'
+        fi
+        echo $REGEX_APP_MERGE_COMMIT
+        REGEX_JIRA_TICKET=GHACT-[[:digit:]]{1,}
+        echo $REGEX_JIRA_TICKET
+        echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags)..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_OUTPUT
+
+    - name: Create json and invoke Jira webhook
+      run: |
+        $json = ConvertTo-Json @{issues = @(${{ steps.jira-list.outputs.ISSUES }}); data = @{version = "${{ env.PATH_APP_NAME }}@v${{ steps.package-version.outputs.VERSION }}"; projectName = "${{ env.JIRA_PROJECT_KEY }}"}}
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod ${{ secrets.JIRA_AUTOMATION_WEBHOOK }} -Method Post -Body $json -ContentType "application/json"
+      shell: pwsh
