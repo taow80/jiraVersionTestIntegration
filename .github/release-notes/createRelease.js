@@ -24,7 +24,7 @@ const createRelease = () => {
             });
         } else if(application === 'backoffice') {
             core.info(`ℹ️ Filtering commits for Backoffice`);
-            appRegex = new RegExp(`\\(.*backoffice.*\\):`, 'mi');
+            appRegex = new RegExp(`\\(.*(\bbackoffice|\bov2).*\\):`, 'mi');
             filteredCommits = commitArray.filter(commit => {
                 return appRegex.test(commit);
             });
