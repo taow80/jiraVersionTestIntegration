@@ -13,17 +13,18 @@ const createRelease = () => {
     } else {
         const commitArray = commits.split(/\r?\n/);
 
-        const appRegex = new RegExp(`\\(${application}\\):`, 'gmi');
         let filteredCommits = [];
+        let appRegex = new RegExp();
 
         if (application === 'channel') {
             core.info(`ℹ️ Filtering commits for Channel and PWA`);
-            const pwaRegex = new RegExp(`\\(pwa\\):`, 'gmi');
+            appRegex = new RegExp(`\\(.*(\bchannel|\bpwa).*\\):`, 'mi');
             filteredCommits = commitArray.filter(commit => {
-                return appRegex.test(commit) || pwaRegex.test(commit);
+                return appRegex.test(commit);
             });
         } else if(application === 'backoffice') {
             core.info(`ℹ️ Filtering commits for Backoffice`);
+            appRegex = new RegExp(`\\(.*backoffice.*\\):`, 'mi');
             filteredCommits = commitArray.filter(commit => {
                 return appRegex.test(commit);
             });
