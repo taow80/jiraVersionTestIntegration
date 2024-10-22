@@ -18,13 +18,13 @@ const createRelease = () => {
 
         if (application === 'channel') {
             core.info(`ℹ️ Filtering commits for Channel and PWA`);
-            appRegex = new RegExp(`\\(.*(\bchannel|\bpwa).*\\):`, 'mi');
+            appRegex = new RegExp(`\\(.*(\\bchannel|\\bpwa).*\\):`, 'mi');
             filteredCommits = commitArray.filter(commit => {
                 return appRegex.test(commit);
             });
         } else if(application === 'backoffice') {
             core.info(`ℹ️ Filtering commits for Backoffice`);
-            appRegex = new RegExp(`\\(.*(\bbackoffice|\bbov2).*\\):`, 'mi');
+            appRegex = new RegExp(`\\(.*(\\bbackoffice|\\bbov2).*\\):`, 'mi');
             filteredCommits = commitArray.filter(commit => {
                 return appRegex.test(commit);
             });
