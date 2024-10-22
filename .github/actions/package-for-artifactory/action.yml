@@ -54,7 +54,7 @@ runs:
         if [[ ${{ env.PATH_APP_NAME }} == channel ]]; then
           REGEX_APP_MERGE_COMMIT='\((\bchannel|\bpwa)\):'
         elif [[ ${{ env.PATH_APP_NAME }} == backoffice ]]; then
-          REGEX_APP_MERGE_COMMIT='\((\bbackoffice|\bbov2)\):'
+          REGEX_APP_MERGE_COMMIT='\((\bbackoffice|\bbackoffice-v2)\):'
         fi
         echo $REGEX_APP_MERGE_COMMIT
         REGEX_JIRA_TICKET=${{ env.JIRA_PROJECT_KEY }}-[[:digit:]]{1,}
