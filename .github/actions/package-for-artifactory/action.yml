@@ -52,9 +52,9 @@ runs:
       id: jira-list
       run: |
         if [[ ${{ env.PATH_APP_NAME }} == channel ]]; then
-          REGEX_APP_MERGE_COMMIT='\((channel|PWA)\):'
+          REGEX_APP_MERGE_COMMIT='\((\bchannel|\bpwa)\):'
         elif [[ ${{ env.PATH_APP_NAME }} == backoffice ]]; then
-          REGEX_APP_MERGE_COMMIT='\((backoffice)\):'
+          REGEX_APP_MERGE_COMMIT='\((\bbackoffice|\bbov2)\):'
         fi
         echo $REGEX_APP_MERGE_COMMIT
         REGEX_JIRA_TICKET=${{ env.JIRA_PROJECT_KEY }}-[[:digit:]]{1,}
