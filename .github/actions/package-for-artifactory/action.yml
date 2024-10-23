@@ -57,9 +57,7 @@ runs:
         elif [[ ${{ env.PATH_APP_NAME }} == backoffice ]]; then
           REGEX_APP_MERGE_COMMIT="\((\bbackoffice|\bbackoffice-v2|$(echo $SHARED_PROJECT_REGEX))\):"
         fi
-        echo $REGEX_APP_MERGE_COMMIT
         REGEX_JIRA_TICKET=${{ env.JIRA_PROJECT_KEY }}-[[:digit:]]{1,}
-        echo $REGEX_JIRA_TICKET
         echo "git log --merges  $(git describe --abbrev=0 --tags)..HEAD"
         echo "ISSUES=$(git log --merges  $(git describe --abbrev=0 --tags)..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_OUTPUT
 
