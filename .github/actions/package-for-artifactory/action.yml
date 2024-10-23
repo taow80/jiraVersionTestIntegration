@@ -53,9 +53,9 @@ runs:
       run: |
         SHARED_PROJECT_REGEX='\bcore|\bdomain|\bdomain-components|\bfdl|\bomega|\bpolicy|\bpresentation'
         if [[ ${{ env.PATH_APP_NAME }} == channel ]]; then
-          REGEX_APP_MERGE_COMMIT="\((\bchannel|\bpwa|\bbranding|$(eval $SHARED_PROJECT_REGEX))\):"
+          REGEX_APP_MERGE_COMMIT="\((\bchannel|\bpwa|\bbranding|$(echo $SHARED_PROJECT_REGEX))\):"
         elif [[ ${{ env.PATH_APP_NAME }} == backoffice ]]; then
-          REGEX_APP_MERGE_COMMIT="\((\bbackoffice|\bbackoffice-v2|$(eval $SHARED_PROJECT_REGEX))\):"
+          REGEX_APP_MERGE_COMMIT="\((\bbackoffice|\bbackoffice-v2|$(echo $SHARED_PROJECT_REGEX))\):"
         fi
         echo $REGEX_APP_MERGE_COMMIT
         REGEX_JIRA_TICKET=${{ env.JIRA_PROJECT_KEY }}-[[:digit:]]{1,}
