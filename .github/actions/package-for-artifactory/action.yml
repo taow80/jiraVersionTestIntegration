@@ -58,6 +58,10 @@ runs:
           REGEX_APP_MERGE_COMMIT="\((\bbackoffice|\bbackoffice-v2|$(echo $SHARED_PROJECT_REGEX))\):"
         fi
         REGEX_JIRA_TICKET=${{ env.JIRA_PROJECT_KEY }}-[[:digit:]]{1,}
+        REGEX_PR_NUMBER=\(#(\d+)\)
+        echo "PR_LINES=$(git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT -B 2 )"
+        echo "PR_NUMBERS=$(git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT -B 2 | grep -E $REGEX_PR_NUMBER )"
+        echo "PR_ISSUES=$(gh pr view 60)";
         echo "git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD"
         echo "ISSUES=$(git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_OUTPUT
 
