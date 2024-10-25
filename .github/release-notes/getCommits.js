@@ -29,7 +29,7 @@ const filterCommits = async (application, commits) => {
             project = commit.match(projectRegex);
             return(project && releaseProjects.includes(project[1].toLowerCase()))
         });
-        return filteredCommits.join("\r\n");
+        return filteredCommits.join("\r\n").replace(/"/g,``).replace(/'/g,``);
 
 }
 
