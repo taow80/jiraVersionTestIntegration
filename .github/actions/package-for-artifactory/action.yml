@@ -44,7 +44,7 @@ runs:
         GH_TOKEN: ${{ github.token }}
       id: release-notes
       run: |
-        node ./.github/release-notes/getCommits.js ${{ steps.last-release-version.outputs.LAST_VERSION }}
+        node ./.github/release-notes/getCommits.js ${{ env.PATH_APP_NAME }} ${{ steps.last-release-version.outputs.LAST_VERSION }}
         node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ env.COMMITS }}"
         
     - name: Collect Jira issue numbers since last release/tag
