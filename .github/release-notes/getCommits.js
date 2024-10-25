@@ -34,7 +34,8 @@ const filterCommits = async (application, commits) => {
 }
 
 const getCommits = async () => {
-    const releaseVersion = process.argv[2];
+    const application = process.argv[2].toLowerCase();
+    const packageVersion = process.argv[3];
 
     let myOutput = '';
     let myError = '';
@@ -50,7 +51,7 @@ const getCommits = async () => {
     }
 };
 
-    await exec.exec('git', ['log', `--pretty=format:%s`, `HEAD...${releaseVersion}`], options);
+    await exec.exec('git', ['log', `--pretty=format:%s`, `HEAD...${application}@v${packageVersion}`], options);
     if(myError){
         core.error(myError)
     } 
