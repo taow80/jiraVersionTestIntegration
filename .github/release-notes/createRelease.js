@@ -14,7 +14,7 @@ const createRelease = () => {
       
         core.info(`ℹ️ Release notes: \r\n ${commits}`);
 
-        if (notes) {
+        if (commits) {
             exec.exec(`gh release create "${application}@v${packageVersion}" --notes "${commits}"`);
         } else {
             core.warning(`⚠️ No commits were found to create release notes`);
