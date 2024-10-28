@@ -31,11 +31,14 @@ const getPrNumbers = async () => {
         console.log(`PR Details:`);
         console.log(prDetails);
         const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectKey }\-\\d+)\\]\\(`, "g");
-        const jiraIssueMatches = jiraIssueRegex.exec(prDetails);
-        console.log('jiraIssueMatches:');
-        console.log(jiraIssueMatches);
+        while ((jiraIssueMatches = jiraIssueRegex.exec(prDetails) !== null) {
+            console.log('MATCHED', jiraIssueMatches);
+            jiraIssueIds.push(jiraIssueMatches[1]);
+        };
+        //console.log('jiraIssueMatches:');
+        //console.log(jiraIssueMatches);
         //console.log(jiraIssueRegex.exec(prDetails));
-        //jiraIssueIds.push(...jiraIssueMatches);
+        //jiraIssueIds.push(jiraIssueMatches[1]);
     };
    
     console.log('Jira Issue IDs');
