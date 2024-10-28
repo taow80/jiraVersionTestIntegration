@@ -28,19 +28,11 @@ const getPrNumbers = async () => {
         
         await exec.exec(`gh pr view ${prNumber}`,[],options);
     
-        console.log(`PR Details:`);
-        console.log(prDetails);
-        console.log('TRIMMED:');
-        console.log(prDetails.split('## What It Does')[0].split('--')[1]);
-        const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectKey }\-\\d+)\\]\\(.*?## What It Does`, "gm");
-        while ((jiraIssueMatches = jiraIssueRegex.exec(prDetails)) !== null) {
-            console.log('MATCHED', jiraIssueMatches);
+        const prLinksOnly = prDetails.split('## What It Does')[0].split('--')[1]);
+        const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectKey }\-\\d+)\\]\\(`, "g");
+        while ((jiraIssueMatches = jiraIssueRegex.exec(prLinksOnly)) !== null) {
             jiraIssueIds.push(jiraIssueMatches[1]);
         };
-        //console.log('jiraIssueMatches:');
-        //console.log(jiraIssueMatches);
-        //console.log(jiraIssueRegex.exec(prDetails));
-        //jiraIssueIds.push(jiraIssueMatches[1]);
     };
    
     console.log('Jira Issue IDs');
