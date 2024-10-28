@@ -33,10 +33,10 @@ const getPrNumbers = async () => {
         const jiraIssueMatches = [...jiraIssueRegex.exec(prDetails)];
         console.log('jiraIssueMatches:');
         console.log(jiraIssueMatches);
-        console.log(...jiraIssueRegex.exec(prDetails));
+        console.log(jiraIssueRegex.exec(prDetails));
         jiraIssueIds.push(...jiraIssueRegex.exec(prDetails));
     });
-  //  const uniqueJiraIssueIds = [...new Set(jiraIssueIds)];
+  //  const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
     console.log('Jira Issue IDs');
     console.log(jiraIssueIds);
   //  console.log('Unique:');
