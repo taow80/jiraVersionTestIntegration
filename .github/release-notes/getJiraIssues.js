@@ -28,8 +28,8 @@ const getPrNumbers = async () => {
           await exec.exec(`gh pr view ${prNumber}`,[],options);
           console.log(`PR Details: ${prDetails}`);
         const jiraIssueRegex = new RegExp(`GHACT`, "g");
-        const jiraIssueMatches = [...prDetails.matchAll(jiraIssueRegex)];
-        console.log('jiraIssueMatches');
+        const jiraIssueMatches = [...jiraIssueRegex.exec(prDetails)];
+        console.log('jiraIssueMatches:');
         console.log(jiraIssueMatches);
     });
 
