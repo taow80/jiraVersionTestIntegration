@@ -28,7 +28,7 @@ const getPrNumbers = async () => {
         
         await exec.exec(`gh pr view ${prNumber}`,[],options);
     
-        const prLinksOnly = prDetails.split('## What It Does')[0].split('--')[1]);
+        const prLinksOnly = prDetails.split('## What It Does')[0].split('--')[1];
         const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectKey }\-\\d+)\\]\\(`, "g");
         while ((jiraIssueMatches = jiraIssueRegex.exec(prLinksOnly)) !== null) {
             jiraIssueIds.push(jiraIssueMatches[1]);
