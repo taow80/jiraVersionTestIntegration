@@ -27,7 +27,7 @@ const getPrNumbers = async () => {
         };
           await exec.exec(`gh pr view ${prNumber}`,[],options);
           console.log(`PR Details: ${prDetails}`);
-        const jiraIssueRegex = new RegExp(`GHACT-\d+`, "g");
+        const jiraIssueRegex = new RegExp(`milestone`, "g");
         const jiraIssueMatches = [...prDetails.matchAll(jiraIssueRegex)];
         console.log('jiraIssueMatches');
         console.log(jiraIssueMatches);
