@@ -23,7 +23,7 @@ const getPrNumbers = async () => {
                 }
             }
         };
-          await exec.exec(`gh pr view ${prNumber}`, [] options);
+          await exec.exec(`gh pr view ${prNumber}`,[],options);
           console.log(`PR Details: ${prDetails}`);
     });
 
