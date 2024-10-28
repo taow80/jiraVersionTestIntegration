@@ -30,7 +30,7 @@ const getPrNumbers = async () => {
     
         console.log(`PR Details:`);
         console.log(prDetails);
-        const jiraIssueRegex = new RegExp(`${ jiraProjectKey }\-\\d+`, "g");
+        const jiraIssueRegex = new RegExp(`\[${ jiraProjectKey }\-\\d+\]\(`, "g");
         const jiraIssueMatches = [...jiraIssueRegex.exec(prDetails)];
         console.log('jiraIssueMatches:');
         console.log(...jiraIssueMatches);
