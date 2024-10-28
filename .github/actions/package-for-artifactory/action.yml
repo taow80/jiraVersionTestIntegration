@@ -51,7 +51,7 @@ runs:
       shell: bash
       id: jira-issue-ids
       run: |
-        node ./.github/release-notes/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" 
+        node ./.github/release-notes/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" ${{ env.JIRA_PROJECT_KEY }}
 
     - name: Create json and invoke Jira webhook
       run: |
