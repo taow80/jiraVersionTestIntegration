@@ -5,7 +5,7 @@ const exec = require('@actions/exec');
 const getPrNumbers = async () => {
     const commits = process.argv[2];
     console.log(`Submit Commits: ${commits}`);
-    const prNumberRegex = "/\(#(\d+)\)\n/g";
+    const prNumberRegex = /\(#(\d+)\)\n/g;
     const prNumberMatches = [...commits.matchAll(prNumberRegex)];
     console.log(`PR Number Match Array:`);
     console.log(prNumberMatches);
