@@ -52,24 +52,6 @@ runs:
       id: jira-issue-ids
       run: |
         node ./.github/release-notes/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" 
-        
-    - name: Collect Jira issue numbers since last release/tag
-      shell: bash
-      id: jira-list
-      run: |
-        SHARED_PROJECT_REGEX='\bcore|\bdomain|\bdomain-components|\bfdl|\bomega|\bpolicy|\bpresentation'
-        if [[ ${{ env.PATH_APP_NAME }} == channel ]]; then
-          REGEX_APP_MERGE_COMMIT="\((\bchannel|\bpwa|\bbranding|$(echo $SHARED_PROJECT_REGEX))\):"
-        elif [[ ${{ env.PATH_APP_NAME }} == backoffice ]]; then
-          REGEX_APP_MERGE_COMMIT="\((\bbackoffice|\bbackoffice-v2|$(echo $SHARED_PROJECT_REGEX))\):"
-        fi
-        REGEX_JIRA_TICKET=${{ env.JIRA_PROJECT_KEY }}-[[:digit:]]{1,}
-        REGEX_PR_NUMBER="\(#(\d+)\)"
-        echo "PR_LINES=$(git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT )"
-        echo "PR_NUMBERS=$(git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT | grep -E $REGEX_PR_NUMBER )"
-        echo "PR_ISSUES=$(gh pr view 62)";
-        echo "git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD"
-        echo "ISSUES=$(git log --merges ${{ steps.last-release-version.outputs.LAST_VERSION }}..HEAD | grep -iE $REGEX_APP_MERGE_COMMIT -B 2 | grep -oE $REGEX_JIRA_TICKET | uniq | sed 's/^\|$/"/g' | paste -sd , - | awk '{print $0}')" >> $GITHUB_OUTPUT
 
     - name: Create json and invoke Jira webhook
       run: |
@@ -85,4 +67,4 @@ runs:
         GH_TOKEN: ${{ github.token }}
       id: release-notes
       run: |
-        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ steps.filtered-commits.outputs.COMMITS }}"
+       // node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ steps.filtered-commits.outputs.COMMITS }}"
