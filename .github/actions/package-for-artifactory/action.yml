@@ -46,15 +46,6 @@ runs:
       run: |
         node ./.github/release-notes/getCommits.js ${{ env.PATH_APP_NAME }} ${{ steps.last-release-version.outputs.LAST_VERSION }}
 
-    - name: Create Release w/ Notes from Filtered Commit PR Titles
-      if: env.DEPLOY_ENVIRONMENT == 'production'
-      shell: bash
-      env: 
-        GH_TOKEN: ${{ github.token }}
-      id: release-notes
-      run: |
-        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ steps.filtered-commits.outputs.COMMITS }}"
-
     - name: Get Jira Issue IDs from PR Details
       if: env.DEPLOY_ENVIRONMENT == 'production'
       shell: bash
@@ -86,3 +77,12 @@ runs:
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-RestMethod ${{ env.JIRA_WEBHOOK_URL }} -Method Post -Body $json -ContentType "application/json"
       shell: pwsh
+
+    - name: Create Release w/ Notes from Filtered Commit PR Titles
+      if: env.DEPLOY_ENVIRONMENT == 'production'
+      shell: bash
+      env: 
+        GH_TOKEN: ${{ github.token }}
+      id: release-notes
+      run: |
+        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ steps.filtered-commits.outputs.COMMITS }}"
