@@ -41,6 +41,7 @@ const getCommits = async () => {
     let myError = '';
 
     const options = {
+        silent: true,
         listeners: {
     stdout: (data) => {
         myOutput += data.toString();
@@ -57,6 +58,5 @@ const getCommits = async () => {
     } 
     const appFilteredCommits = filterCommits(application, myOutput)
     core.setOutput("COMMITS", appFilteredCommits);
-    console.log(`App Filtered Commits: ${appFilteredCommits}`);
 };
 getCommits();
