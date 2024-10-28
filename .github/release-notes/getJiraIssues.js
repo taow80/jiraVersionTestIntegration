@@ -42,7 +42,7 @@ const getPrNumbers = async () => {
     const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
     console.log('Unique:');
     console.log(uniqueJiraIssueIds);
-    core.setOutput("APP_SPECIFIC_JIRA_ISSUES", uniqueJiraIssueIds);
+    core.setOutput("JIRA_ISSUE_IDS", uniqueJiraIssueIds);
 };
 
   
