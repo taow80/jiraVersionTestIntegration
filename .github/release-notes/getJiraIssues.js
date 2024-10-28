@@ -8,7 +8,7 @@ const getPrNumbers = async () => {
     const prNumberRegex = /\(#(\d+)\)\n/g
     const prNumberMatches = [...commits.matchAll(prNumberRegex)];
 
-    prNumberMatches.foreach(async (match) => {
+    prNumberMatches.forEach(async (match) => {
       const prNumber = match[1];
       const prDetails = await exec.exec(`gh pr view ${prNumber}`);
       console.log(prDetails);
