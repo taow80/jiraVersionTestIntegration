@@ -35,12 +35,11 @@ const getPrNumbers = async () => {
         };
     };
    
-    console.log('Jira Issue IDs');
-    console.log(jiraIssueIds);
     const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
-    console.log('Unique:');
-    console.log(uniqueJiraIssueIds);
     core.setOutput("JIRA_ISSUE_IDS", uniqueJiraIssueIds.join());
+    if(prDetailErrors) {
+        core.error(`Jira Issue ID PR Errors: ${prDetailErrors}`);
+    }
 };
 
   
