@@ -10,7 +10,7 @@ const getPrNumbers = async () => {
 
     const jiraIssueIds = [];
     let prDetailErrors = '';
-    prNumberMatches.forEach(async (match) => {
+    for await (const match of prNumberMatches) {
         const prNumber = match[1];
         let prDetails = '';
         
@@ -32,10 +32,10 @@ const getPrNumbers = async () => {
         const jiraIssueRegex = new RegExp(`${ jiraProjectKey }\-\\d+`, "g");
         const jiraIssueMatches = [...jiraIssueRegex.exec(prDetails)];
         console.log('jiraIssueMatches:');
-        console.log(jiraIssueMatches);
-        console.log(jiraIssueRegex.exec(prDetails));
-        jiraIssueIds.push(...jiraIssueRegex.exec(prDetails));
-    });
+        console.log(...jiraIssueMatches);
+        //console.log(jiraIssueRegex.exec(prDetails));
+        jiraIssueIds.push(...jiraIssueMatches);
+    };
   //  const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
     console.log('Jira Issue IDs');
     console.log(jiraIssueIds);
