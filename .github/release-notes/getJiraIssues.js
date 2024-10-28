@@ -31,7 +31,7 @@ const getPrNumbers = async () => {
         console.log(`PR Details:`);
         console.log(prDetails);
         console.log('TRIMMED:');
-        console.log(prDetails.replace(/## What It Does[\s\S.]*?/g, ''));
+        console.log(prDetails.split('## What It Does')[0].split('--')[1]);
         const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectKey }\-\\d+)\\]\\(.*?## What It Does`, "gm");
         while ((jiraIssueMatches = jiraIssueRegex.exec(prDetails)) !== null) {
             console.log('MATCHED', jiraIssueMatches);
