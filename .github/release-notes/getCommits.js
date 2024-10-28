@@ -43,7 +43,7 @@ const getCommits = async () => {
     const options = {
         listeners: {
     stdout: (data) => {
-        myOutput += filterCommits(application, data.toString());
+        myOutput += data.toString();
     },
     stderr: (data) => {
         myError += data.toString();
@@ -55,5 +55,6 @@ const getCommits = async () => {
     if(myError){
         core.error(myError)
     } 
+    core.setOutput("filteredCommits", filterCommits(application, myOutput));
 };
 getCommits();
