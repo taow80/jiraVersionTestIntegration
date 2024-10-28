@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const exec = require('@actions/exec');
 
 
-const filterCommits = async (application, commits) => {
+const filterCommits = (application, commits) => {
     const commitArray = commits.split(/\r?\n/);
         let releaseProjects = [
             'core',
