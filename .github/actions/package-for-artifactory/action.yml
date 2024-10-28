@@ -54,6 +54,13 @@ runs:
       id: release-notes
       run: |
         node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ steps.filtered-commits.outputs.COMMITS }}"
+
+    - name: Get Jira Issue IDs from PR Details
+      if: env.DEPLOY_ENVIRONMENT == 'production'
+      shell: bash
+      id: jira-issue-ids
+      run: |
+        node ./.github/release-notes/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" 
         
     - name: Collect Jira issue numbers since last release/tag
       shell: bash
