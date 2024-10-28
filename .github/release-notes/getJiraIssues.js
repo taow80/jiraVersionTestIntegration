@@ -36,11 +36,12 @@ const getPrNumbers = async () => {
         //console.log(jiraIssueRegex.exec(prDetails));
         jiraIssueIds.push(...jiraIssueMatches);
     };
-  //  const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
+   
     console.log('Jira Issue IDs');
     console.log(jiraIssueIds);
-  //  console.log('Unique:');
- //   console.log(uniqueJiraIssueIds);
+    const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
+    console.log('Unique:');
+    console.log(uniqueJiraIssueIds);
 // core.setOutput("APP_SPECIFIC_JIRA_ISSUES", appFilteredCommits);
 //    console.log(`App Filtered Commits: ${appFilteredCommits}`);
 };
