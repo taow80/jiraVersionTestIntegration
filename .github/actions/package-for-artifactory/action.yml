@@ -37,7 +37,7 @@ runs:
       run: |
           echo "LAST_VERSION=$(gh release list | grep -i '^${{ env.PATH_APP_NAME }}@v' | head -n 1 | awk '{print $1}')" >> $GITHUB_OUTPUT
     
-    - name: App-specific commits since last App Release
+    - name: Get App-specific commits since last App Release Version
       if: env.DEPLOY_ENVIRONMENT == 'production'
       shell: bash
       env: 
@@ -53,7 +53,7 @@ runs:
         GH_TOKEN: ${{ github.token }}
       id: release-notes
       run: |
-        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ steps.filtered-comits.outputs.COMMITS }}"
+        node ./.github/release-notes/createRelease.js ${{ env.PATH_APP_NAME }} ${{ steps.package-version.outputs.VERSION }} "${{ steps.filtered-commits.outputs.COMMITS }}"
         
     - name: Collect Jira issue numbers since last release/tag
       shell: bash
