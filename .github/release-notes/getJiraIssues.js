@@ -1,11 +1,6 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
 
-const getJiraIssueIds = (prDetails) => {
-    const jiraIssueRegex = new RegExp(`${ jiraProjectKey }\-\\d+`, "g");
-    const jiraIssueMatches = [...jiraIssueRegex.exec(prDetails)];
-}
-
 const getPrNumbers = async () => {
     const commits = process.argv[2];
     const jiraProjectKey = process.argv[3];
@@ -32,16 +27,20 @@ const getPrNumbers = async () => {
         };
         
         await exec.exec(`gh pr view ${prNumber}`,[],options);
-        
+    
+        console.log(`Project Key: ${ jiraProjectKey }`);
         const jiraIssueRegex = new RegExp(`${ jiraProjectKey }\-\\d+`, "g");
+        const jiraIssueMatches = [...jiraIssueRegex.exec(prDetails)];
+        console.log('jiraIssueMatches:');
+        console.log(jiraIssueMatches);
         console.log(...jiraIssueRegex.exec(prDetails));
         jiraIssueIds.push(...jiraIssueRegex.exec(prDetails));
     });
-    const uniqueJiraIssueIds = [...new Set(jiraIssueIds)];
+  //  const uniqueJiraIssueIds = [...new Set(jiraIssueIds)];
     console.log('Jira Issue IDs');
     console.log(jiraIssueIds);
-    console.log('Unique:');
-    console.log(uniqueJiraIssueIds);
+  //  console.log('Unique:');
+ //   console.log(uniqueJiraIssueIds);
 // core.setOutput("APP_SPECIFIC_JIRA_ISSUES", appFilteredCommits);
 //    console.log(`App Filtered Commits: ${appFilteredCommits}`);
 };
