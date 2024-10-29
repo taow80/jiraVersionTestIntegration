@@ -5,7 +5,7 @@ const getPrNumbers = async () => {
     const commits = process.argv[2];
     const jiraProjectKey = process.argv[3];
 
-    const prNumberRegex = /\(#(\d+)\)/g;
+    const prNumberRegex = /\s\(#(\d+)\)$/gm;
     const prNumberMatches = [...commits.matchAll(prNumberRegex)];
 
     const jiraIssueIds = [];
