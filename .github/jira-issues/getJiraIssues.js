@@ -34,13 +34,13 @@ const getPrNumbers = async () => {
             jiraIssueIds.push(jiraIssueMatches[1]);
         };
     };
-   
-    const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
-    core.setOutput("JIRA_ISSUE_IDS", uniqueJiraIssueIds.join());
+
     if(prDetailErrors) {
         core.error(`Jira Issue ID PR Errors: ${prDetailErrors}`);
     }
+   
+    const uniqueJiraIssueIds = [...new Set([...jiraIssueIds])];
+    core.setOutput("JIRA_ISSUE_IDS", uniqueJiraIssueIds.join());
+    
 };
-
-  
 getPrNumbers();
