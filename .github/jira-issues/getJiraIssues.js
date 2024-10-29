@@ -3,7 +3,7 @@ const exec = require('@actions/exec');
 
 const getPrNumbers = async () => {
     const commits = process.argv[2];
-    const jiraProjectKey = process.argv[3];
+    const jiraProjectPrefix = process.argv[3];
 
     const prNumberRegex = /\s\(#(\d+)\)$/gm;
     const prNumberMatches = [...commits.matchAll(prNumberRegex)];
@@ -29,7 +29,7 @@ const getPrNumbers = async () => {
         await exec.exec(`gh pr view ${prNumber}`,[],options);
         const prBodyOnly = prDetails.split('--')[1];
         const prSearchArea = prBodyOnly.split('## What It Does')[0];
-        const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectKey }\-\\d+)\\]\\(`, "g");
+        const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectPrefix }\-\\d+)\\]\\(`, "g");
         while ((jiraIssueMatches = jiraIssueRegex.exec(prSearchArea)) !== null) {
             jiraIssueIds.push(jiraIssueMatches[1]);
         };
