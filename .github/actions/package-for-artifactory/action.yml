@@ -60,7 +60,7 @@ runs:
       shell: bash
       id: pr-detail-jira-issues
       run: |
-        node ./.github/jira-issues/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" ${{ env.JIRA_PROJECT_KEY }}
+        node ./.github/jira-issues/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" ${{ env.JIRA_PROJECT_PREFIX }}
 
     - name: Create json and invoke Jira webhook
       run: |
