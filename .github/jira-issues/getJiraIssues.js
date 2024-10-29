@@ -27,10 +27,10 @@ const getPrNumbers = async () => {
         };
         
         await exec.exec(`gh pr view ${prNumber}`,[],options);
-    
-        const prLinksOnly = prDetails.split('## What It Does')[0].split('--')[1];
+        const prBodyOnly = prDetails.split('--')[1];
+        const prSearchArea = prBodyOnly.split('## What It Does')[0];
         const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectKey }\-\\d+)\\]\\(`, "g");
-        while ((jiraIssueMatches = jiraIssueRegex.exec(prLinksOnly)) !== null) {
+        while ((jiraIssueMatches = jiraIssueRegex.exec(prSearchArea)) !== null) {
             jiraIssueIds.push(jiraIssueMatches[1]);
         };
     };
