@@ -1,7 +1,6 @@
 env:
   APP_NAME: 'Backoffice'
   PATH_APP_NAME: 'backoffice'
-  JIRA_PROJECT_KEY: 'GHACT'
 
 name: Backoffice Package for Artifactory
 on:
@@ -44,4 +43,5 @@ jobs:
           PATH_APP_NAME: ${{ env.PATH_APP_NAME }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOY_ENVIRONMENT: ${{ steps.is-production.outputs.DEPLOY_ENVIRONMENT }}
+          JIRA_PROJECT_PREFIX: ${{ env.JIRA_PROJECT_PREFIX }}
           JIRA_WEBHOOK_URL: ${{ secrets.JIRA_WEBHOOK_URL }}
