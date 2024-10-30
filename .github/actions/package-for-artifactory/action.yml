@@ -60,11 +60,11 @@ runs:
       shell: bash
       id: pr-detail-jira-issues
       run: |
-        node ./.github/jira-issues/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" ${{ env.JIRA_PROJECT_PREFIX }}
+        node ./.github/jira-issues/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" ${{ env.JIRA_PROJECT_NAME }}
 
     - name: Create json and invoke Jira webhook
       run: |
-        $json = ConvertTo-Json @{issues = @("${{ steps.pr-detail-jira-issues.outputs.JIRA_ISSUE_IDS }}"); data = @{version = "${{ env.PATH_APP_NAME }}@v${{ steps.package-version.outputs.VERSION }}"; projectName = "${{ env.JIRA_PROJECT_KEY }}"}}
+        $json = ConvertTo-Json @{issues = @("${{ steps.pr-detail-jira-issues.outputs.JIRA_ISSUE_IDS }}"); data = @{version = "${{ env.PATH_APP_NAME }}@v${{ steps.package-version.outputs.VERSION }}"; projectName = "${{ env.JIRA_PROJECT_NAME }}"}}
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-RestMethod ${{ env.JIRA_WEBHOOK_URL }} -Method Post -Body $json -ContentType "application/json"
       shell: pwsh
