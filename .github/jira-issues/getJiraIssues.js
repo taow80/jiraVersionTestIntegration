@@ -29,6 +29,7 @@ const getPrNumbers = async () => {
         await exec.exec(`gh pr view ${prNumber}`,[],options);
         const prBodyOnly = prDetails.split(/^--$/m)[1];
         const prSearchArea = prBodyOnly.split('## What It Does')[0];
+        console.log(prSearchArea)
         const jiraIssueRegex = new RegExp(`\\[(${ jiraProjectPrefix }\-\\d+)\\]\\(`, "g");
         while ((jiraIssueMatches = jiraIssueRegex.exec(prSearchArea)) !== null) {
             jiraIssueIds.push(jiraIssueMatches[1]);
