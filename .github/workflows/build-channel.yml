@@ -44,4 +44,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOY_ENVIRONMENT: ${{ steps.is-production.outputs.DEPLOY_ENVIRONMENT }}
           JIRA_PROJECT_NAME: ${{ vars.JIRA_PROJECT_NAME }}
-          JIRA_WEBHOOK_URL: ${{ secrets.JIRA_WEBHOOK_URL }}
+          JIRA_VERSION_WEBHOOK_URL: ${{ secrets.JIRA_VERSION_WEBHOOK_URL }}
+          JIRA_ISSUE_WEBHOOK_URL: ${{ secrets.JIRA_ISSUE_WEBHOOK_URL }}
