@@ -53,12 +53,15 @@ runs:
       run: |
         node ./.github/jira-issues/getJiraIssues.js "${{ steps.filtered-commits.outputs.COMMITS }}" ${{ env.JIRA_PROJECT_NAME }}
 
-    - name: Create json and invoke Jira webhook
+    - name: Create Jira Version and Update Jira Issues with webhooks
       if: ${{ env.DEPLOY_ENVIRONMENT == 'production' && steps.pr-detail-jira-issues.outputs.JIRA_ISSUE_IDS != '' }}
       run: |
-        $json = ConvertTo-Json @{issues = @("${{ steps.pr-detail-jira-issues.outputs.JIRA_ISSUE_IDS }}"); data = @{version = "${{ env.PATH_APP_NAME }}@v${{ steps.package-version.outputs.VERSION }}"; projectName = "${{ env.JIRA_PROJECT_NAME }}"}}
+        $versionJson = ConvertTo-Json @{data = @{version = "${{ env.PATH_APP_NAME }}@v${{ steps.package-version.outputs.VERSION }}"; projectName = "${{ env.JIRA_PROJECT_NAME }}"}}
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Invoke-RestMethod ${{ env.JIRA_WEBHOOK_URL }} -Method Post -Body $json -ContentType "application/json"
+        Invoke-RestMethod ${{ env.JIRA_VERSION_WEBHOOK_URL }} -Method Post -Body $versionJson -ContentType "application/json"
+        $issueJson = ConvertTo-Json @{issues = @("${{ steps.pr-detail-jira-issues.outputs.JIRA_ISSUE_IDS }}"); data = @{version = "${{ env.PATH_APP_NAME }}@v${{ steps.package-version.outputs.VERSION }}"; projectName = "${{ env.JIRA_PROJECT_NAME }}"}}
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-RestMethod ${{ env.JIRA_ISSUE_WEBHOOK_URL }} -Method Post -Body $issueJson -ContentType "application/json"
       shell: pwsh
 
 
